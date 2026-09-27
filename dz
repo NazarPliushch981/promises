@@ -22,143 +22,140 @@
 </head>
 <body>
 
-    <h1>Лабораторна робота</h1>
+    <h2>1</h2>
+    <div class="result" id="task1-1"></div>
+    <div class="result" id="task1-2"></div>
 
-    <h2>Завдання 1</h2>
-    <div id="task1-res1" class="result"></div>
-    <div id="task1-res2" class="result"></div>
+    <h2>2</h2>
+    <div class="result" id="task2-1"></div>
+    <div class="result" id="task2-2"></div>
 
-    <h2>Завдання 2</h2>
-    <p><i>(Результати також виведено у консоль)</i></p>
-    <div id="task2-res1" class="result"></div>
-    <div id="task2-res2" class="result"></div>
+    <h2>3</h2>
+    <div class="result" id="task3"></div>
 
-    <h2>Завдання 3)</h2>
-    <div id="task3-res" class="result">Чекаємо</div>
-
-    <h2>Завдання 4</h2>
-    <div id="task4-res1" class="result"></div>
-    <div id="task4-res2" class="result"></div>
-
+    <h2>4</h2>
+    <div class="result" id="task4-1"></div>
+    <div class="result" id="task4-2"></div>
 
     <script>
-        function onSuccess(result) {
-            return "Результат: " + result;
+        function doubleElement(element) {
+            return element * 2;
         }
 
-        function onError(error) {
-            return "Помилка: " + error;
-        }
-
-        function calculate(a, b, onSuccess, onError) {
-            if (b === 0) {
-                return onError("На нуль не можна ділити");
-            } else {
-                var res = a / b;
-                return onSuccess(res);
-            }
-        }
-
-        document.getElementById('task1-res1').innerText = calculate(10, 2, onSuccess, onError);
-        document.getElementById('task1-res2').innerText = calculate(10, 0, onSuccess, onError);
-
-        function logElement(element) {
-            console.log("Елемент:", element);
-        }
-
-        function squareElement(element) {
-            return element * element;
+        function reverseElement(element) {
+            return String(element).split('').reverse().join('');
         }
 
         function processArray(array, callback) {
-            var newArray = [];
-            for (var i = 0; i < array.length; i++) {
-                var result = callback(array[i]);
-                if (result !== undefined) {
-                    newArray.push(result);
+            let result = [];
+            for (let i = 0; i < array.length; i++) {
+                result.push(callback(array[i]));
+            }
+            return result;
+        }
+
+        let res1_1 = processArray([1, 2, 3, 4, 5], doubleElement);
+        let res1_2 = processArray(["hello", "world"], reverseElement);
+
+        document.getElementById("task1-1").innerText = "Подвоєння: " + JSON.stringify(res1_1);
+        document.getElementById("task1-2").innerText = "Перевертання: " + JSON.stringify(res1_2);
+
+        function isEven(number) {
+            return number % 2 === 0;
+        }
+
+        function isShortWord(word) {
+            return word.length <= 4;
+        }
+
+        function filterArray(array, callback) {
+            let result = [];
+            for (let i = 0; i < array.length; i++) {
+                if (callback(array[i]) === true) {
+                    result.push(array[i]);
                 }
             }
-            if (newArray.length > 0) {
-                return newArray;
-            }
+            return result;
         }
 
-        var arr = [1, 2, 3, 4, 5];
-        
-        console.log("Завдання2");
-        processArray(arr, logElement);
+        let res2_1 = filterArray([1, 2, 3, 4, 5], isEven);
+        let res2_2 = filterArray(["cat", "elephant", "dog", "bird"], isShortWord);
 
-        var squaredArr = processArray(arr, squareElement);
-        
-        document.getElementById('task2-res1').innerText = "logElement: елементи виведено)";
-        document.getElementById('task2-res2').innerText = "squareElement: [" + squaredArr.join(", ") + "]";
-        function createOrder(orderId) {
+        document.getElementById("task2-1").innerText = "Парні числа: " + JSON.stringify(res2_1);
+        document.getElementById("task2-2").innerText = "Слова: " + JSON.stringify(res2_2);
+
+
+        function washDishes() {
             return new Promise(function(resolve) {
                 setTimeout(function() {
-                    resolve("Створено" + orderId);
-                }, 1000);
-            });
-        }
-
-        function processOrder(orderId) {
-            return new Promise(function(resolve) {
-                setTimeout(function() {
-                    resolve("Оброблено" + orderId);
+                    resolve("Вимито");
                 }, 2000);
             });
         }
 
-        function deliverOrder(orderId) {
+        function cleanRoom() {
             return new Promise(function(resolve) {
                 setTimeout(function() {
-                    resolve("Доставлено" + orderId);
-                }, 3000);
+                    resolve("Прибрано");
+                }, 4000);
             });
         }
-        var task3Box = document.getElementById('task3-res');
-        var myOrderId = 101;
 
-        createOrder(myOrderId)
-            .then(function(msg1) {
-                task3Box.innerHTML = msg1 + "<br>";
-                return processOrder(myOrderId);
-            })
-            .then(function(msg2) {
-                task3Box.innerHTML += msg2 + "<br>";
-                return deliverOrder(myOrderId);
-            })
-            .then(function(msg3) {
-                task3Box.innerHTML += msg3;
-            });
-
-        function checkEvenNumber(number) {
-            return new Promise(function(resolve, reject) {
+        function makeDinner() {
+            return new Promise(function(resolve) {
                 setTimeout(function() {
-                    if (number % 2 === 0) {
-                        resolve("Парне: " + number);
-                    } else {
-                        reject("Непарне: " + number);
-                    }
-                }, 1000);
+                    resolve("Вечеря приготовлена");
+                }, 7000);
             });
         }
 
-        checkEvenNumber(4)
-            .then(function(res) {
-                document.getElementById('task4-res1').innerText = res;
+        let task3Div = document.getElementById("task3");
+        task3Div.innerText = "виконання задач";
+
+        washDishes()
+            .then(function(res1) {
+                task3Div.innerHTML = res1 + "<br>";
+                return cleanRoom();
             })
-            .catch(function(err) {
-                document.getElementById('task4-res1').innerText = err;
+            .then(function(res2) {
+                task3Div.innerHTML += res2 + "<br>";
+                return makeDinner();
+            })
+            .then(function(res3) {
+                task3Div.innerHTML += res3;
             });
 
-        checkEvenNumber(5)
+
+        function sortArray(array) {
+            return new Promise(function(resolve, reject) {
+                if (array.length === 0) {
+                    reject("Масив порожній");
+                } else {
+                    setTimeout(function() {
+                        let sorted = array.slice().sort(function(a, b) {
+                            return a - b;
+                        });
+                        resolve(sorted);
+                    }, 2000);
+                }
+            });
+        }
+
+        sortArray([5, 2, 8, 1, 4])
             .then(function(res) {
-                document.getElementById('task4-res2').innerText = res;
+                document.getElementById("task4-1").innerText = "Результат: " + JSON.stringify(res);
             })
             .catch(function(err) {
-                document.getElementById('task4-res2').innerText = err;
+                document.getElementById("task4-1").innerText = "Помилка: " + err;
             });
 
+        sortArray([])
+            .then(function(res) {
+                document.getElementById("task4-2").innerText = "Результатя: " + JSON.stringify(res);
+            })
+            .catch(function(err) {
+                document.getElementById("task4-2").innerText = "Помилка масиву: " + err;
+            });
     </script>
 </body>
 </html>
